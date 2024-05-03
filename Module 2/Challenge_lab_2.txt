@@ -1,0 +1,42 @@
+*&---------------------------------------------------------------------*
+*& Report ZNAUS24_005_CHALLENGE_LAB_2
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT znaus24_005_challenge_lab_2.
+
+*--------------------------- Parameters -------------------------------*
+
+PARAMETERS p_first(20) TYPE c.
+PARAMETERS p_last(20) TYPE c.
+PARAMETERS p_hours TYPE i.
+PARAMETERS p_wage(5) TYPE p DECIMALS 2.
+
+*--------------------------- Variables ---------------------------------*
+
+DATA v_weekly(6) TYPE p DECIMALS 2.
+
+*-------------------------- Calculations -------------------------------*
+
+v_weekly = p_hours * p_wage.
+
+*--------------------------- Formatting --------------------------------*
+
+FORMAT COLOR 5 INTENSIFIED OFF.
+WRITE 'Hello'.
+FORMAT COLOR OFF INTENSIFIED OFF.
+
+FORMAT COLOR 6 INVERSE ON.
+WRITE / p_first.
+WRITE / p_last.
+
+ULINE /.
+FORMAT COLOR OFF INVERSE OFF.
+
+FORMAT COLOR 3 INTENSIFIED OFF.
+WRITE: / 'You reported working', p_hours.
+WRITE: 'hours at $', p_wage.
+WRITE: 'per hour'.
+WRITE: / 'This week you made: $', v_weekly.
+FORMAT COLOR intensified OFF.
+ULINE /.

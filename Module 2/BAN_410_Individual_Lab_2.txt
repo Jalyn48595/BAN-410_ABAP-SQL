@@ -1,0 +1,71 @@
+*&---------------------------------------------------------------------*
+*& Report ZNAUS24_005_LAB_2
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT znaus24_005_lab_2.
+
+
+*--------------------------- Parameters -------------------------------*
+
+PARAMETERS p_first(20) TYPE c.
+PARAMETERS p_last(20) TYPE c.
+
+PARAMETERS p_point1(3) TYPE p.
+PARAMETERS p_point2(3) TYPE p.
+PARAMETERS p_point3(3) TYPE p.
+PARAMETERS p_point4(3) TYPE p.
+
+PARAMETERS p_psble1(3) TYPE p.
+PARAMETERS p_psble2(3) TYPE p.
+PARAMETERS p_psble3(3) TYPE p.
+PARAMETERS p_psble4(3) TYPE p.
+
+*--------------------------- Variables ---------------------------------*
+
+DATA v_grade1(5) TYPE p DECIMALS 2.
+DATA v_grade2(5) TYPE p DECIMALS 2.
+DATA v_grade3(5) TYPE p DECIMALS 2.
+DATA v_grade4(5) TYPE p DECIMALS 2.
+
+DATA v_course(5) TYPE p DECIMALS 2.
+
+*-------------------------- Calculations -------------------------------*
+
+COMPUTE v_grade1 = ( p_point1 / p_psble1 ) * 100.
+COMPUTE v_grade2 = ( p_point2 / p_psble2 ) * 100.
+COMPUTE v_grade3 = ( p_point3 / p_psble3 ) * 100.
+COMPUTE v_grade4 = ( p_point4 / p_psble4 ) * 100.
+
+COMPUTE v_course = ( ( p_point1 + p_point2 + p_point3 + p_point4 ) / ( p_psble1 + p_psble2 + p_psble3 + p_psble4 ) ) * 100.
+
+*--------------------------- Formatting ---------------------------------*
+FORMAT COLOR 5 INTENSIFIED OFF.
+WRITE: /'Grade report for: ', p_first.
+WRITE: p_last.
+FORMAT COLOR OFF INTENSIFIED OFF.
+
+ULINE (35).
+
+FORMAT COLOR 4 INTENSIFIED.
+WRITE: /'Assignment 1 grade: ', v_grade1.
+WRITE: '%'.
+WRITE: /'Assignment 2 grade: ', v_grade2.
+WRITE: '%'.
+WRITE: /'Assignment 3 grade: ', v_grade3.
+WRITE: '%'.
+WRITE: /'Assignment 4 grade: ', v_grade4.
+WRITE: '%'.
+FORMAT COLOR OFF INTENSIFIED OFF.
+
+SKIP.
+ULINE (35).
+
+FORMAT COLOR 4 INVERSE.
+WRITE: /'Course Grade: '.
+FORMAT COLOR OFF INVERSE OFF.
+
+
+FORMAT COLOR 6 INTENSIFIED OFF.
+WRITE: v_course, '%'.
+FORMAT COLOR OFF INTENSIFIED OFF.
