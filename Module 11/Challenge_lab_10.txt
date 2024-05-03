@@ -1,0 +1,67 @@
+*&---------------------------------------------------------------------*
+*& Report ZNAUS24_005_CHALLENGE_LAB_10
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT znaus24_005_challenge_lab_10.
+
+**** Declare the structure of the internal table and work area
+TYPES: BEGIN OF product_data,
+         name     LIKE znaus24_products-product_name,
+         category LIKE znaus24_products-product_category,
+         price    LIKE znaus24_products-price,
+       END OF product_data.
+
+**** constants
+CONSTANTS con_total_rec(17) TYPE c VALUE 'Total Records: '.
+CONSTANTS con_tax_rate(3) TYPE p DECIMALS 2 VALUE '1.15'.
+CONSTANTS con_header(105) TYPE c VALUE
+'Product Name Category Price Total'.
+
+**** variable for the total number of records.
+DATA total_rec TYPE P.
+**** Variable to hold the price of the product, including taxes.
+DATA total_price TYPE P.
+
+**** Internal table and work area.
+DATA: itab_product_data TYPE STANDARD TABLE OF product_data,
+      wa_product_data   TYPE product_data.
+
+*------------------------------------------------------------------
+* Get the data from the ZNAUS24_PRODUCTS database table
+*------------------------------------------------------------------
+SELECT product_name product_category price
+FROM znaus24_products INTO TABLE itab_product_data.
+
+*------------------------------------------------------------------
+* Write the report
+*------------------------------------------------------------------
+**** write the header data
+FORMAT COLOR 5.
+WRITE 4 con_header.
+FORMAT COLOR OFF.
+
+**** write the first line of the table.
+ULINE.
+
+**** Process the internal table.
+LOOP AT itab_product_data INTO wa_product_data.
+
+**** Increment the counter.
+  ADD 1 TO total_rec.
+
+**** Determine the total price
+  total_price = wa_product_data-price * con_tax_rate.
+
+**** write the body of the report
+  FORMAT COLOR 3.
+  WRITE: / '|', wa_product_data-name,'|',wa_product_data-category,'|', wa_product_data-price NO-GAP,'|',
+  total_price, '|'.
+ENDLOOP.
+FORMAT COLOR OFF.
+ULINE.
+
+**** Write the total number of records.
+FORMAT COLOR 7.
+WRITE: /, con_total_rec, total_rec.
+FORMAT COLOR OFF.

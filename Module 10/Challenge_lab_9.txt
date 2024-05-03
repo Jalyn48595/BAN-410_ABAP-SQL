@@ -1,0 +1,49 @@
+*&---------------------------------------------------------------------*
+*& Report ZNAUS24_005_CHALLENGE_LAB_9
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT znaus24_005_challenge_lab_9 No STANDARD PAGE HEADING LINE-COUNT 5.
+
+*----------------------- Parameters -----------------------------------*
+
+PARAMETERS cat TYPE znaus24_products-product_category.
+
+*--------------------- Internal Table and WA --------------------------*
+
+TYPES: BEGIN OF product_search,
+         product_name     LIKE znaus24_products-product_name,
+         product_category LIKE znaus24_products-product_category,
+         price            LIKE znaus24_products-price,
+       END OF product_search.
+
+DATA: itab_products TYPE STANDARD TABLE OF product_search,
+      wa_products   TYPE product_search.
+
+
+*--------------------- Initialization ---------------------------------*
+
+INITIALIZATION.
+  MOVE 'CHAIRS' TO cat.
+
+*-------------------------- Output ------------------------------------*
+Start-of-selection.
+
+  SELECT product_name product_category price
+  FROM znaus24_products INTO TABLE itab_products
+  WHERE product_category = cat.
+
+  LOOP AT itab_products INTO wa_products.
+    WRITE: / wa_products-product_name, wa_products-product_category, wa_products-price.
+  ENDLOOP.
+
+TOP-OF-PAGE.
+  PERFORM write_header.
+
+
+*------------------------------- Forms ---------------------------------*
+FORM write_header.
+  FORMAT COLOR 4.
+  WRITE 'Product Name              Product Category                                     Price'.
+  FORMAT COLOR OFF.
+ENDFORM.

@@ -1,0 +1,113 @@
+*&---------------------------------------------------------------------*
+*& Report ZNAUS24_005_LAB_9
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT znaus24_005_lab_9.
+
+*-------------- parameters -------------------------------------------*
+
+PARAMETERS par_num1(2) TYPE p.
+PARAMETERS par_num2(2) TYPE p.
+PARAMETERS par_code(1) TYPE c.
+
+*-------------- variables --------------------------------------------*
+
+DATA calc_result(6) TYPE p DECIMALS 2.
+
+*-------------- constants --------------------------------------------*
+
+CONSTANTS con_num1(12) TYPE c VALUE 'Number One: '.
+CONSTANTS con_num2(12) TYPE c VALUE 'Number Two: '.
+CONSTANTS con_result(8) TYPE c VALUE 'Result: '.
+CONSTANTS con_add(1) TYPE c VALUE 'A'.
+CONSTANTS con_sub(1) TYPE c VALUE 'S'.
+CONSTANTS con_mult(1) TYPE c VALUE 'M'.
+CONSTANTS con_div(1) TYPE c VALUE 'D'.
+CONSTANTS con_error(17) TYPE c VALUE 'Invalid Operation'.
+
+* ------------- main program ------------------------------------------*
+* performing the calculation using a case
+CASE par_code.
+
+* perform the add
+  WHEN con_add.
+    PERFORM do_add USING par_num1 par_num2 CHANGING calc_result.
+    FORMAT COLOR 1 INVERSE.
+    WRITE: /, con_num1, par_num1.
+    WRITE: /, con_num2, par_num2.
+    WRITE: /, con_result, calc_result.
+    FORMAT COLOR OFF INVERSE OFF.
+
+
+* perform the subtract
+  WHEN con_sub.
+    PERFORM do_subtract USING par_num1 par_num2 CHANGING calc_result.
+    FORMAT COLOR 2 INVERSE.
+    WRITE: /, con_num1, par_num1.
+    WRITE: /, con_num2, par_num2.
+    WRITE: /, con_result, calc_result.
+    FORMAT COLOR OFF INVERSE OFF.
+
+
+* perform the multiply
+  WHEN con_mult.
+    PERFORM do_multiply USING par_num1 par_num2 CHANGING calc_result.
+    FORMAT COLOR 3 INVERSE.
+    WRITE: /, con_num1, par_num1.
+    WRITE: /, con_num2, par_num2.
+    WRITE: /, con_result, calc_result.
+    FORMAT COLOR OFF INVERSE OFF.
+
+
+* perform the divide
+  WHEN con_div.
+    PERFORM do_divide USING par_num1 par_num2 CHANGING calc_result.
+    FORMAT COLOR 4 INVERSE.
+    WRITE: /, con_num1, par_num1.
+    WRITE: /, con_num2, par_num2.
+    WRITE: /, con_result, calc_result.
+    FORMAT COLOR OFF INVERSE OFF.
+
+
+* invalid operation code
+  WHEN OTHERS.
+    WRITE / con_error.
+    FORMAT COLOR 5 INVERSE.
+    WRITE: /, con_num1, par_num1.
+    WRITE: /, con_num2, par_num2.
+    WRITE: /, con_result, calc_result.
+    FORMAT COLOR OFF INVERSE OFF.
+ENDCASE.
+
+*---------------------------- Forms ---------------------------------*
+*Form for add
+FORM do_add USING VALUE(n1) TYPE any
+  VALUE(n2) TYPE any
+  CHANGING r1 TYPE any.
+  COMPUTE r1 = n1 + n2.
+ENDFORM.
+
+
+*Form for subtract
+FORM do_subtract USING VALUE(n1) TYPE any
+VALUE(n2) TYPE any
+CHANGING r1 TYPE any.
+  COMPUTE r1 = n1 - n2.
+ENDFORM.
+
+
+*Form for multiply
+FORM do_multiply USING VALUE(n1) TYPE any
+VALUE(n2) TYPE any
+CHANGING r1 TYPE any.
+  COMPUTE r1 = n1 * n2.
+ENDFORM.
+
+
+*Form for divide
+FORM do_divide USING VALUE(n1) TYPE any
+VALUE(n2) TYPE any
+CHANGING r1 TYPE any.
+  COMPUTE r1 = n1 / n2.
+ENDFORM.

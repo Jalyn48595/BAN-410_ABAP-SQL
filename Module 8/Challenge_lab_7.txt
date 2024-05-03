@@ -1,0 +1,54 @@
+*&---------------------------------------------------------------------*
+*& Report ZNAUS24_005_CHALLENGE_LAB_7
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT znaus24_005_challenge_lab_7.
+
+*------------------------ File Path -----------------------------------*
+
+CONSTANTS emp_file(10) TYPE c VALUE 'file33.dat'.
+
+*------------------- Internal Table Structure -------------------------*
+
+TYPES: BEGIN OF emp,
+         madt    LIKE znaus24033_emp-mandt,
+         emp_id  LIKE znaus24033_emp-emp_id,
+         f_name  LIKE znaus24033_emp-f_name,
+         l_lname LIKE znaus24033_emp-l_name,
+       END OF emp.
+
+*-------------------------- Internal Table ----------------------------*
+
+DATA: itab_insert TYPE STANDARD TABLE OF emp,
+     wa_emp      TYPE emp.
+
+*------------------------ Variables -----------------------------------*
+
+DATA total_rec(3) TYPE p.
+
+*---------------------- Export to External File ------------------------*
+
+START-OF-SELECTION.
+  PERFORM get_data.
+  PERFORM write_report.
+
+SKIP.
+WRITE:/ 'Total Records Sent: ', total_rec.
+
+FORM get_data.
+
+  SELECT mandt emp_id f_name l_name
+  FROM znaus24033_emp INTO TABLE itab_insert.
+
+ENDFORM.
+
+FORM write_report.
+  OPEN DATASET emp_file FOR OUTPUT IN BINARY MODE.
+  LOOP AT itab_insert INTO wa_emp.
+    TRANSFER wa_emp TO emp_file.
+    WRITE:/ 'record sent'.
+    ADD 1 TO total_rec.
+  ENDLOOP.
+  CLOSE DATASET emp_file.
+ENDFORM.

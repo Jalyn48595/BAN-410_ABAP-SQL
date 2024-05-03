@@ -1,0 +1,39 @@
+*&---------------------------------------------------------------------*
+*& Report ZNAUS24_005_LAB_10
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT znaus24_005_lab_10.
+
+*------------------- Internal Table and WA ----------------------------*
+TYPES: BEGIN OF customer,
+         first_name LIKE znaus24_customer-first_name,
+         last_name  LIKE znaus24_customer-last_name,
+         cust_email LIKE znaus24_customer-cust_email,
+         cust_phone LIKE znaus24_customer-cust_phone,
+       END OF customer.
+
+DATA: itab_customer TYPE STANDARD TABLE OF customer,
+      wa_customer   TYPE customer.
+
+*------------------------ Main Output ---------------------------------*
+START-OF-SELECTION.
+
+  SELECT first_name last_name cust_email cust_phone
+  FROM znaus24_customer INTO TABLE itab_customer.
+  LOOP AT itab_customer INTO wa_customer.
+    WRITE: / wa_customer-first_name, wa_customer-last_name.
+  ENDLOOP.
+
+*-------------------- Drill Down Navigation --------------------------*
+AT LINE-SELECTION.
+  PERFORM cust_detail.
+
+*---------------------------- Forms -----------------------------------*
+FORM cust_detail.
+  IF sy-lsind = 1.
+    WRITE: /  wa_customer-cust_email, wa_customer-cust_phone.
+  ELSEIF sy-lsind > 1.
+    MESSAGE 'No further details available' TYPE 'E'.
+  ENDIF.
+ENDFORM.

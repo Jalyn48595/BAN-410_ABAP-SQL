@@ -1,0 +1,80 @@
+*&---------------------------------------------------------------------*
+*& Report ZNAUS24_005_LAB_8
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT znaus24_005_lab_8.
+
+*---------------------------- File Path -------------------------------*
+
+CONSTANTS cust_file(15) TYPE c VALUE 'file005.dat'.
+
+*---------------------------- Parameters ------------------------------*
+
+PARAMETERS p_disply AS CHECKBOX.
+PARAMETERS p_create AS CHECKBOX.
+
+*-------------------------- Other Constants ---------------------------*
+
+CONSTANTS header(100) TYPE c VALUE 'First Name           Last Name                      Email'.
+
+*---------------------------- Variables -------------------------------*
+
+DATA total_rec(3) TYPE p.
+
+*---------------------- Internal Table Structure------------------------*
+
+TYPES: BEGIN OF cust,
+         mant   LIKE znaus24005_data-mandt,
+         f_name LIKE znaus24005_data-f_name,
+         l_name LIKE znaus24005_data-l_name,
+         email  LIKE znaus24005_data-email,
+       END OF cust.
+
+*-------------------------- Internal Table ----------------------------*
+
+DATA: itab_cust TYPE STANDARD TABLE OF cust,
+      wa_cust   TYPE cust.
+
+*----------------------------- Output ---------------------------------*
+
+IF p_disply ='X' AND p_create ='X'.
+  WRITE: header.
+  PERFORM get_data.
+  PERFORM write_report.
+  PERFORM write_file.
+  WRITE:/ 'Records Created Successfully', total_rec.
+
+ELSEIF p_create ='X' AND p_disply IS INITIAL.
+  WRITE: header.
+  PERFORM get_data.
+  PERFORM write_report.
+
+ELSEIF p_disply ='X' AND p_create IS INITIAL.
+  PERFORM get_data.
+  PERFORM write_file.
+  WRITE:/ 'Records Created Successfully', total_rec.
+
+ENDIF.
+
+
+*----------------------------- Forms ----------------------------------*
+FORM get_data.
+  SELECT mandt f_name l_name email
+  FROM znaus24005_data INTO TABLE itab_cust.
+ENDFORM.
+
+FORM write_report.
+  LOOP AT itab_cust INTO wa_cust.
+    WRITE:/ wa_cust-f_name, wa_cust-l_name, wa_cust-email.
+  ENDLOOP.
+ENDFORM.
+
+FORM write_file.
+  OPEN DATASET cust_file FOR OUTPUT IN BINARY MODE.
+  LOOP AT itab_cust INTO wa_cust.
+    TRANSFER wa_cust TO cust_file.
+    ADD 1 TO total_rec.
+  ENDLOOP.
+  CLOSE DATASET cust_file.
+ENDFORM.

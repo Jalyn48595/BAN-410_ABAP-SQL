@@ -1,0 +1,43 @@
+*&---------------------------------------------------------------------*
+*& Report ZNAUS24_005_LAB_6
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT znaus24_005_lab_6.
+
+
+*-------------------------- Parameters --------------------------------*
+
+PARAMETERS id LIKE znaus24_lab6-employeeid.
+PARAMETERS first LIKE znaus24_lab6-firstname.
+PARAMETERS last LIKE znaus24_lab6-lastname.
+PARAMETERS salary LIKE znaus24_lab6-salary.
+
+*------------------------ Internal Table -------------------------------*
+
+DATA: itab_insert TYPE STANDARD TABLE OF znaus24_lab6,
+      wa_insert   LIKE LINE OF itab_insert.
+
+*---------------------- Move records into WA ----------------------------*
+
+MOVE id TO wa_insert-employeeid.
+MOVE first TO wa_insert-firstname.
+MOVE last TO wa_insert-lastname.
+MOVE salary TO wa_insert-salary.
+
+*------------------ Insert the Data to the Table ------------------------*
+
+INSERT INTO znaus24_lab6 VALUES WA_insert.
+
+*------------------------------ Output ----------------------------------*
+
+CASE SY-SUBRC.
+WHEN 0.
+WRITE 'Row Inserted OK!'.
+WHEN '4'.
+Write 'Duplicate Row! - Row Not Inserted'.
+WHEN OTHERS.
+WRITE: 'Major Error - Row Not Inserted'.
+ENDCASE.
+
+

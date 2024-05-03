@@ -1,0 +1,53 @@
+*&---------------------------------------------------------------------*
+*& Report ZNAUS24_005_CHALLENGE_LAB_6
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT znaus24_005_challenge_lab_6.
+
+*------------------------------ Parameters ----------------------------*
+PARAMETERS p_pid LIKE znaus24_orders-product_id.
+
+*------------------------------ Variable ------------------------------*
+
+DATA rec_count(3) TYPE p.
+
+*------------------------ Internal Table ------------------------------*
+
+TYPES: BEGIN OF inventory,
+
+         first_name TYPE znaus24_customer-first_name,
+         last_name  TYPE znaus24_customer-last_name,
+         cust_email TYPE znaus24_customer-cust_email,
+         quantity   TYPE znaus24_orders-quantity,
+       END OF inventory.
+
+
+DATA: itab_inventory TYPE STANDARD TABLE OF inventory,
+      wa_inventory   TYPE inventory.
+
+*-------------------------------------- SQL---- ------------------------------*
+
+SELECT znaus24_customer~first_name znaus24_customer~last_name znaus24_customer~cust_email znaus24_orders~quantity
+INTO CORRESPONDING FIELDS OF TABLE itab_inventory
+FROM znaus24_customer JOIN znaus24_orders ON znaus24_customer~customer_id = znaus24_orders~customer_id
+WHERE znaus24_orders~product_id = p_pid.
+
+
+*-------------------------------------- Output ----------------------------------*
+
+LOOP AT itab_inventory INTO wa_inventory.
+  ADD 1 TO rec_count.
+ENDLOOP.
+
+IF rec_count > 0.
+  FORMAT COLOR 3.
+  WRITE: '              Customer Name                    Customer Email                Quantity  '.
+  FORMAT COLOR OFF.
+  LOOP AT itab_inventory INTO wa_inventory.
+    WRITE: / '|',wa_inventory-first_name, wa_inventory-last_name, '|',wa_inventory-cust_email, '|',wa_inventory-quantity, '|'.
+
+  ENDLOOP.
+ELSE.
+  WRITE 'No Records Found'.
+ENDIF.

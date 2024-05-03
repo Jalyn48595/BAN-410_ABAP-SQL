@@ -1,0 +1,56 @@
+*&---------------------------------------------------------------------*
+*& Report ZNAUS24_005_CHALLENGE_LAB_5
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT znaus24_005_challenge_lab_5.
+
+*----------------------- Internal Table Structure ---------------------*
+
+TYPES: BEGIN OF product_data,
+         c_name  LIKE znaus24_products-product_name,
+         c_price LIKE znaus24_products-price,
+       END OF product_data.
+
+*-------------------------- Parameters --------------------------------*
+
+PARAMETERS p_price(6) TYPE p DECIMALS 2.
+
+*-------------------------- Constants --------------------------------*
+
+CONSTANTS header(45) TYPE c VALUE 'Product Name Price'.
+
+*-------------------------- Variables --------------------------------*
+
+DATA tot(2) TYPE p.
+
+*------------------ Internal Table/ Work Area --------------------------*
+
+DATA: itab_products TYPE STANDARD TABLE OF product_data,
+      wa_products   TYPE product_data.
+
+*------------------ Get Data From Internal Table  -----------------------*
+
+SELECT product_name price
+FROM znaus24_products INTO TABLE itab_products
+WHERE price < p_price.
+
+*----------------------------- Output ----------------------------------*
+
+IF p_price IS INITIAL.
+  FORMAT COLOR 6.
+  WRITE ' PLEASE ENTER A MAX PRICE '.
+  FORMAT COLOR OFF.
+ELSE.
+  FORMAT COLOR 3.
+  WRITE: 'Max Price Entered: ', '$', p_price.
+  SKIP.
+  WRITE header.
+  FORMAT COLOR OFF.
+  LOOP AT itab_products INTO wa_products.
+    ADD 1 TO tot.
+    WRITE: / wa_products-c_name, wa_products-c_price.
+  ENDLOOP.
+  SKIP.
+  WRITE: 'Total Number of Products:', tot.
+ENDIF.

@@ -1,0 +1,51 @@
+*&---------------------------------------------------------------------*
+*& Report ZNAUS24_005_CHALLENGE_LAB_8
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT znaus24_005_challenge_lab_8.
+
+*-------------- parameters
+
+PARAMETERS par_num1(2) TYPE p.
+PARAMETERS par_num2(2) TYPE p.
+PARAMETERS par_num3(2) TYPE p.
+PARAMETERS par_num4(2) TYPE p.
+
+*-------------- variables
+
+DATA calc_result(6) TYPE p DECIMALS 2.
+
+*-------------- constants
+
+CONSTANTS con_num1(14) TYPE c VALUE 'Number One : '.
+CONSTANTS con_num2(14) TYPE c VALUE 'Number Two : '.
+CONSTANTS con_num3(14) TYPE c VALUE 'Number Three: '.
+CONSTANTS con_num4(14) TYPE c VALUE 'Number Four : '.
+CONSTANTS con_total(9) TYPE c VALUE 'Average: '.
+
+*------------------ Perform
+
+PERFORM do_calculation USING par_num1 par_num2 par_num3 par_num4 CHANGING calc_result.
+
+* ------------- main program
+
+* write the result to the report
+WRITE: con_num1, par_num1.
+WRITE: /, con_num2, par_num2.
+WRITE: /, con_num3, par_num3.
+WRITE: /, con_num4, par_num4.
+WRITE: /, con_total, calc_result.
+
+
+
+*----------------- Forms
+FORM do_calculation USING VALUE(n1) TYPE any
+ VALUE(n2) TYPE any
+VALUE(n3) TYPE any
+VALUE(n4) TYPE any
+CHANGING n5 TYPE any.
+
+* perform the calculation
+  COMPUTE n5 = ( n1 + n2 + n3 + n4 ) / 4.
+ENDFORM.
