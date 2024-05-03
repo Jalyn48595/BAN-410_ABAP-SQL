@@ -1,0 +1,79 @@
+*&---------------------------------------------------------------------*
+*& Report ZNAUS24_005_CHALLENGE_LAB_4
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT znaus24_005_challenge_lab_4.
+
+TYPES f_name(10) TYPE c.
+TYPES l_name(15) TYPE c.
+TYPES email(25) TYPE c.
+
+*********Customer Parameters**********
+PARAMETERS c_fname TYPE f_name.
+PARAMETERS c_lname TYPE l_name.
+PARAMETERS c_email TYPE email.
+
+*********Recipient Parameters*********
+PARAMETERS r_fname TYPE f_name.
+PARAMETERS r_lname TYPE l_name.
+PARAMETERS r_email TYPE email.
+PARAMETERS message(120) TYPE c.
+
+**********Records**************
+DATA BEGIN OF customer_info.
+DATA first_name TYPE f_name.
+DATA last_name TYPE l_name.
+DATA email TYPE email.
+DATA END OF customer_info.
+DATA BEGIN OF recipient_info.
+DATA first_name TYPE f_name.
+DATA last_name TYPE l_name.
+DATA email TYPE email.
+DATA message(120) TYPE c.
+DATA END OF recipient_info.
+
+customer_info-first_name = c_fname.
+customer_info-last_name = c_lname.
+customer_info-email = c_email.
+recipient_info-first_name = r_fname.
+recipient_info-last_name = r_lname.
+recipient_info-email = r_email.
+recipient_info-message = message.
+
+************* Output ****************
+
+IF customer_info-first_name IS NOT INITIAL AND customer_info-last_name IS NOT INITIAL AND customer_info-email IS NOT INITIAL AND
+recipient_info-last_name IS NOT INITIAL AND recipient_info-first_name IS NOT INITIAL AND recipient_info-email IS NOT INITIAL AND recipient_info-message IS NOT INITIAL.
+  FORMAT COLOR 3 INTENSIFIED.
+  WRITE: / 'Order Summary'.
+  FORMAT COLOR OFF INTENSIFIED OFF.
+  SKIP.
+  FORMAT COLOR 4 INTENSIFIED.
+  WRITE:/ 'Customer Information'.
+  SKIP.
+  WRITE:/ '      Name', '           Email'.
+  SKIP.
+  FORMAT COLOR OFF INTENSIFIED OFF.
+  FORMAT COLOR 4 INVERSE.
+  WRITE:/ customer_info-first_name, customer_info-last_name.
+  WRITE: customer_info-email.
+  FORMAT COLOR OFF INVERSE OFF.
+
+  SKIP.
+  FORMAT COLOR 4 INTENSIFIED.
+  WRITE:/ 'Recipient Information'.
+  SKIP.
+  WRITE:/ '      Name', '           Email'.
+  WRITE: '          Message'.
+  SKIP.
+  FORMAT COLOR OFF INTENSIFIED OFF.
+  FORMAT COLOR 4 INVERSE.
+  WRITE:/ recipient_info-first_name, recipient_info-last_name.
+  WRITE: recipient_info-email, recipient_info-message.
+  FORMAT COLOR OFF INVERSE OFF.
+ELSE.
+  FORMAT COLOR 6 INTENSIFIED.
+  WRITE:/ 'Please fill in all fields'.
+  FORMAT COLOR OFF INTENSIFIED OFF.
+ENDIF.

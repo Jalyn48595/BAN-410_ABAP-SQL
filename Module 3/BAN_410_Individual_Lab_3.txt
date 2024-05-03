@@ -1,0 +1,70 @@
+*&---------------------------------------------------------------------*
+*& Report ZNAUS24_005_LAB_3
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT znaus24_005_lab_3.
+
+*--------------------------- Parameters -------------------------------*
+
+PARAMETERS p_first(20) TYPE c.
+PARAMETERS p_last(20) TYPE c.
+PARAMETERS p_color(5) TYPE c.
+
+*--------------------------- Formatting --------------------------------*
+
+IF p_first IS NOT INITIAL AND p_last IS NOT INITIAL.
+  IF p_color = 'RED'.
+    FORMAT COLOR 6 INTENSIFIED OFF.
+    WRITE:/ p_first, p_last.
+    FORMAT COLOR OFF.
+  ENDIF.
+  IF p_color = 'BLUE'.
+    FORMAT COLOR 4 INTENSIFIED.
+    WRITE:/ p_first, p_last.
+    FORMAT COLOR OFF.
+  ENDIF.
+  IF p_color = 'GREEN'.
+    FORMAT COLOR 5 INTENSIFIED OFF.
+    WRITE:/ p_first, p_last.
+    FORMAT COLOR OFF.
+  ENDIF.
+  IF p_color = 'ALL'.
+    FORMAT COLOR 6 INTENSIFIED OFF.
+    WRITE:/ p_first, p_last.
+    FORMAT COLOR OFF.
+    SKIP.
+    FORMAT COLOR 4 INTENSIFIED.
+    WRITE:/ p_first, p_last.
+    FORMAT COLOR OFF.
+    SKIP.
+    FORMAT COLOR 5 INTENSIFIED OFF.
+    WRITE:/ p_first, p_last.
+    FORMAT COLOR OFF.
+    SKIP.
+  ENDIF.
+  IF p_color <>'RED' AND p_color <>'BLUE' AND p_color <>'GREEN' AND p_color <> 'ALL'.
+    FORMAT COLOR 6 INVERSE.
+    WRITE:/ 'Please enter RED, BLUE, GREEN, or ALL'.
+    FORMAT COLOR OFF.
+  ENDIF.
+ENDIF.
+
+IF p_first IS INITIAL AND p_last IS NOT INITIAL.
+  FORMAT COLOR 6 INVERSE.
+  WRITE: / 'Please enter your First name'.
+  FORMAT COLOR OFF.
+ENDIF.
+
+IF p_first IS NOT INITIAL AND p_last IS INITIAL.
+  FORMAT COLOR 6 INVERSE.
+  WRITE: / 'Please enter your Last name'.
+  FORMAT COLOR OFF.
+ENDIF.
+
+
+IF p_first IS INITIAL AND p_last IS INITIAL.
+  FORMAT COLOR 6 INVERSE.
+  WRITE: / 'Please enter your First and Last names'.
+  FORMAT COLOR OFF.
+ENDIF.

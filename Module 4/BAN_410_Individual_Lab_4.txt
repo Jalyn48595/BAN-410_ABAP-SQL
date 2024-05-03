@@ -1,0 +1,105 @@
+*&---------------------------------------------------------------------*
+*& Report ZNAUS24_005_LAB_4
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT znaus24_005_lab_4.
+
+*--------------------------- Types —-----------------------------------*
+
+TYPES f_name(15) TYPE c.
+TYPES l_name(20) TYPE c.
+TYPES email(30) TYPE c.
+TYPES address(50) TYPE c.
+TYPES gift(7) TYPE c.
+TYPES cost(6) TYPE c.
+
+*----------------------- Customer Parameters ---------------------------*
+
+PARAMETERS c_fname TYPE f_name.
+PARAMETERS c_lname TYPE l_name.
+PARAMETERS c_email TYPE email.
+
+*---------------------- Recipient Parameters --------------------------*
+
+PARAMETERS r_fname TYPE f_name.
+PARAMETERS r_lname TYPE l_name.
+PARAMETERS r_email TYPE email.
+PARAMETERS r_addres TYPE address.
+PARAMETERS r_gift TYPE gift.
+
+*--------------------------- Records ----------------------------------*
+DATA BEGIN OF customer_info.
+DATA first_name TYPE f_name.
+DATA last_name TYPE l_name.
+DATA email TYPE email.
+DATA END OF customer_info.
+
+DATA BEGIN OF recipient_info.
+DATA first_name TYPE f_name.
+DATA last_name TYPE l_name.
+DATA email TYPE email.
+DATA address TYPE address.
+DATA gift TYPE gift.
+DATA END OF recipient_info.
+
+DATA BEGIN OF gifts.
+DATA flower TYPE cost.
+DATA candy TYPE cost.
+DATA card TYPE cost.
+DATA END OF gifts.
+
+
+customer_info-first_name = c_fname.
+customer_info-last_name = c_lname.
+customer_info-email = c_email.
+
+recipient_info-first_name = r_fname.
+recipient_info-last_name = r_lname.
+recipient_info-email = r_email.
+recipient_info-address = r_addres.
+recipient_info-gift = r_gift.
+
+gifts-flower = '$25.00'.
+gifts-candy = '$20.00'.
+gifts-card = '$8.00'.
+
+*--------------------------- Constants --------------------------------*
+
+CONSTANTS c_flower TYPE p DECIMALS 2 VALUE '25.00'.
+CONSTANTS c_candy TYPE p DECIMALS 2 VALUE '20.00'.
+CONSTANTS c_card TYPE p DECIMALS 2 VALUE '8.00'.
+
+*--------------------------- Formatting -------------------------------*
+FORMAT COLOR 7 INTENSIFIED.
+WRITE:/ 'Order Details'.
+FORMAT COLOR OFF INTENSIFIED OFF.
+SKIP.
+
+FORMAT COLOR 4 INVERSE.
+WRITE:/ 'Customer Information'.
+WRITE:/ 'Name:  ', customer_info-first_name.
+WRITE:  customer_info-last_name.
+WRITE:/ 'Email:  ', customer_info-email.
+SKIP.
+SKIP.
+WRITE:/ 'Recipient Information'.
+WRITE:/ 'Name:  ', recipient_info-first_name.
+WRITE: recipient_info-last_name.
+WRITE:/ 'Email:  ', recipient_info-email.
+WRITE:/ 'Address:  ', recipient_info-address.
+SKIP.
+
+WRITE:/ 'Gift Selected: ', recipient_info-gift.
+FORMAT COLOR OFF INVERSE OFF.
+FORMAT COLOR 4 INTENSIFIED.
+WRITE:/ 'Order Total: '.
+
+IF r_gift ='FLOWERS'.
+  WRITE: gifts-flower.
+ELSEIF r_gift = 'CANDY'.
+  WRITE: gifts-candy.
+ELSEIF r_gift = 'CARD'.
+  WRITE: gifts-card.
+ENDIF.
+FORMAT COLOR OFF.

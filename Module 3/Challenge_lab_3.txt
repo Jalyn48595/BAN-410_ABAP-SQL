@@ -1,0 +1,55 @@
+*&---------------------------------------------------------------------*
+*& Report ZNAUS24_005_CHALLENGE_LAB_3
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT znaus24_005_challenge_lab_3.
+
+
+*--------------------------- Parameters -------------------------------*
+
+PARAMETERS p_num1(10) TYPE p.
+PARAMETERS p_num2(10) TYPE p.
+PARAMETERS p_action(1) TYPE c.
+
+*--------------------------- Variables ---------------------------------*
+
+DATA v_add(12) TYPE p DECIMALS 2.
+DATA v_sub(12) TYPE p DECIMALS 2.
+DATA v_mul(12) TYPE p DECIMALS 2.
+DATA v_div(12) TYPE p DECIMALS 2.
+
+*-------------------------- Calculations -------------------------------*
+
+COMPUTE v_add = ( p_num1 + p_num2 ).
+COMPUTE v_sub = ( p_num1 - p_num2 ).
+COMPUTE v_mul = ( p_num1 * p_num2 ).
+COMPUTE v_div = ( p_num1 / p_num2 ).
+
+*--------------------------- Formatting --------------------------------*
+
+IF p_action = 'A'.
+  WRITE: / 'You have selected', 'ADD'.
+  WRITE: / 'First Number: ', p_num1.
+  WRITE: / 'Second Number: ', p_num2.
+  WRITE: / 'Answer: ', v_add.
+ELSEIF p_action = 'S'.
+  WRITE: / 'You have selected', 'SUBTRACT'.
+  WRITE: / 'First Number: ', p_num1.
+  WRITE: / 'Second Number: ', p_num2.
+  WRITE: / 'Answer: ', v_sub.
+ELSEIF p_action = 'M'.
+  WRITE: / 'You have selected', 'MULTIPLY'.
+  WRITE: / 'First Number: ', p_num1.
+  WRITE: / 'Second Number: ', p_num2.
+  WRITE: / 'Answer: ', v_mul.
+ELSEIF p_action = 'D'.
+  WRITE: / 'You have selected', 'DIVIDE'.
+  WRITE: / 'First Number: ', p_num1.
+  WRITE: / 'Second Number: ', p_num2.
+  WRITE: / 'Answer: ', v_div.
+ELSE.
+FORMAT COLOR 6 INVERSE.
+  WRITE: 'Error: Please enter A to Add, S to Subtract, M to Multiply, or D to Divide.'.
+FORMAT COLOR OFF INVERSE OFF.
+ENDIF.
